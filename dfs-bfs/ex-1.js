@@ -1,39 +1,49 @@
 const N = 5;
 const directions = ["R", "R", "R", "U", "D", "D"];
 
-const board = new Array(N + 1);
+// 동 서 남 북
+const dx = [1, -1, 0, 0];
+const dy = [0, 0, 1, -1];
+const indexByDirection = {
+  R: 0,
+  L: 1,
+  D: 2,
+  U: 3,
+};
 
-for (let i = 0; i <= N; i++) {
-  board[i] = new Array(N + 1);
-}
-
-for (let i = 1; i <= N; i++) {
-  for (let j = 1; j <= N; j++) {
-    board[i][j] = `(${i}, ${j})`;
+function sol() {
+  const board = makeBoard();
+  // y, x
+  let current = [1, 1];
+  for (let direct of directions) {
+    const index = indexByDirection[direct];
+    current = calCurrentPostion(current, index);
   }
+
+  return current;
 }
 
-// 동 북 서 남
-const dx = [0, -1, 0, 1];
-const dy = [1, 0, -1, 0];
-const moveTypes = ["R", "U", "L", "D"];
-
-let [x, y] = [1, 1];
-
-for (let direction of directions) {
-  const directIndex = moveTypes.findIndex((type) => type === direction);
-  if (
-    isPossibleDirection(dx[directIndex], x, N) &&
-    isPossibleDirection(dy[directIndex], y, N)
-  ) {
-    x += dx[directIndex];
-    y += dy[directIndex];
+function makeBoard() {
+  const board = [];
+  for (let i = 0; i <= N; i++) {
+    const col = [];
+    for (let j = 0; j <= N; j++) {
+      col.push(`${i}, ${j}`);
+    }
+    board[i] = col;
   }
+  return board;
 }
 
-function isPossibleDirection(moveTo, current, N) {
-  if (moveTo + current < 1 || moveTo + current > N) {
-    return false;
+function calCurrentPostion(current, index) {
+  const x = current[1] + dx[index];
+  const y = current[0] + dy[index];
+
+  if (x <= 0 || y <= 0) {
+    return current;
   }
-  return true;
+
+  return [y, x];
 }
+
+console.log(sol());
