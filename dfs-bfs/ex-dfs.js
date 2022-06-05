@@ -10,20 +10,26 @@ const graph = [
   [1, 7],
 ];
 
-const sol = (visit) => {
-  const visited = Array(9).fill(false);
+const visited = Array(9).fill(false);
+
+const dfs = (visit) => {
   const answer = [];
-  const dfs = (visit) => {
+  const dfsImple = (visit) => {
     visited[visit] = true;
     answer.push(visit);
     for (const i of graph[visit]) {
       if (!visited[i]) {
-        dfs(i);
+        dfsImple(i);
       }
     }
   };
-  dfs(visit);
-  console.log(answer);
+  dfsImple(visit);
+
+  return answer;
 };
 
-sol(3);
+const sol = () => {
+  console.log(dfs(1));
+};
+
+sol();
